@@ -53,7 +53,7 @@ class Chef
 
       def self.ossec_to_xml(hash)
         require 'gyoku'
-        Gyoku.xml object_to_ossec(hash)
+        Gyoku.xml object_to_ossec(hash), unwrap: true
       end
     end
   end
