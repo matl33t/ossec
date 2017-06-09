@@ -19,7 +19,7 @@
 
 # general settings
 default['ossec']['dir']             = '/var/ossec'
-default['ossec']['server_role']     = 'ossec_server'
+default['ossec']['server_cookbook']     = 'ossec_server'
 default['ossec']['server_env']      = nil
 default['ossec']['agent_server_ip'] = nil
 
