@@ -19,10 +19,10 @@
 
 ossec_server = []
 
-search_string = "role:#{node['ossec']['server_role']}"
+search_string = "cookbook:#{node['ossec']['server_cookbook']}"
 search_string << " AND chef_environment:#{node['ossec']['server_env']}" if node['ossec']['server_env']
 
-if node.run_list.roles.include?(node['ossec']['server_role'])
+if node.run_list.cookbooks.include?(node['ossec']['server_cookbook'])
   ossec_server << node['ipaddress']
 else
   search(:node, search_string) do |n|

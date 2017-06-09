@@ -27,8 +27,8 @@ Installs OSSEC from source in a server-agent installation. See:
 ## Attributes
 
 - `node['ossec']['dir']` - Installation directory for OSSEC, default `/var/ossec`. All existing packages use this directory so you should not change this.
-- `node['ossec']['server_role']` - When using server/agent setup, this role is used to search for the OSSEC server, default `ossec_server`.
-- `node['ossec']['server_env']` - When using server/agent setup, this value will scope the role search to the specified environment, default nil.
+- `node['ossec']['server_cookbook']` - When using server/agent setup, this cookbook is used to search for the OSSEC server, default `ossec_server`.
+- `node['ossec']['server_env']` - When using server/agent setup, this value will scope the cookbook search to the specified environment, default nil.
 - `node['ossec']['agent_server_ip']` - The IP of the OSSEC server. The client recipe will attempt to determine this value via search. Default is nil, only required for agent installations.
 - `node['ossec']['data_bag']['encrypted']` - Boolean value which indicates whether or not the OSSEC data bag is encrypted
 - `node['ossec']['data_bag']['name']` - The name of the data bag to use
@@ -130,7 +130,7 @@ OSSEC uses the term `agent` instead of client. The agent recipe includes the `os
 
 ### client
 
-Configures the system as an OSSEC agent to the OSSEC server. This recipe will search for the server based on `node['ossec']['server_role']`. It will also set the `agent_server_ip` attribute. The ossec user will have an SSH key created so the server can distribute the agent key.
+Configures the system as an OSSEC agent to the OSSEC server. This recipe will search for the server based on `node['ossec']['server_cookbook ']`. It will also set the `agent_server_ip` attribute. The ossec user will have an SSH key created so the server can distribute the agent key.
 
 ### server
 
@@ -173,7 +173,7 @@ The cookbook can be used to install OSSEC in one of the three types:
 - server - use the ossec::server recipe.
 - agent - use the ossec::client recipe
 
-For local-only installations, add just `recipe[ossec]` to the node run list, or put it in a role (like a base role).
+For local-only installations, add just `recipe[ossec]` to the node run list, or put it in a cookbook.
 
 ### Server/Agent
 
@@ -197,10 +197,10 @@ ruby -e 'puts IO.read("/tmp/id_rsa")'
 ruby -e 'puts IO.read("/tmp/id_rsa.pub")'
 ```
 
-For the OSSEC server, create a role, `ossec_server`. Add attributes per above as needed to customize the installation.
+For the OSSEC server, create a cookbook, `ossec_server`. Add attributes per above as needed to customize the installation.
 
 ```
-% cat roles/ossec_server.rb
+% cat cookbook/ossec_server.rb
 name "ossec_server"
 description "OSSEC Server"
 run_list("recipe[ossec::server]")
@@ -218,10 +218,10 @@ override_attributes(
 )
 ```
 
-For OSSEC agents, create a role, `ossec_client`.
+For OSSEC agents, create a cookbook, `ossec_client`.
 
 ```
-% cat roles/ossec_client.rb
+% cat cookbook/ossec_client.rb
 name "ossec_client"
 description "OSSEC Client Agents"
 run_list("recipe[ossec::client]")
